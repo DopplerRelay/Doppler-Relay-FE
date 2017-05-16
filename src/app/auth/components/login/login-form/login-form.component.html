@@ -1,0 +1,21 @@
+<div>
+  <h1>Login to Doppler Relay</h1>
+  <h2>Enjoy the benefits of the Transactional Email</h2>
+  <form novalidate [formGroup]="loginform" (ngSubmit)="onLogin()" >
+    <div class="form-group">
+      <label for="name">Username:</label>
+      <input type="text" class="form-control" formControlName="username">
+      <div *ngIf="username.touched && username.invalid" class="alert alert-danger">
+          Username is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="name">Password:</label>
+      <input type="password" class="form-control" id="password" formControlName="password" />
+      <div *ngIf="password.touched && password.invalid" class="alert alert-danger">
+          Password is required
+      </div>
+    </div>
+    <button type="submit" [disabled]="!loginform.valid" >Login</button>
+  </form>
+</div>
