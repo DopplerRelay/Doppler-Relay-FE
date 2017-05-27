@@ -1,15 +1,16 @@
-import { Logger } from 'angular2-logger/core';
 import { Injectable } from '@angular/core';
 import { Token } from "app/shared/models/token";
 import { Observable } from "rxjs/Observable";
 import { ApplicationError } from "app/shared/services/infrastructure/applicationError";
-import { HttpService } from "app/shared/services/infrastructure/http/http.service";
+import { HttpProxyService } from "app/shared/services/infrastructure/http-proxy/http-proxy.service";
+import { LocalStorageService } from "app/shared/services/infrastructure/local-storage/local-storage.service";
+import { ApiToken } from "app/shared/models/api/api-token";
 import "rxjs/add/operator/map"
 
 @Injectable()
 export class AuthService {
 
-  constructor(private http: HttpService, private logger: Logger) { }
+  constructor(private http: HttpProxyService, private localStorageService: LocalStorageService) { }
 
   openSession(username: string, password: string): Observable<void> {
     
@@ -17,15 +18,16 @@ export class AuthService {
 
     return this.http.post('tokens', credentials)
       .map(response => {
-        // TODO: use mapper to get the token
-        // if (!mapper.TryToMap<Token>(response.json()))
-        //   throw new ServiceError(ServiceError.INVALID_SERVER_RESPONSE)
-        let token = response.json() as Token;
-        if (!token || !token.accessToken)
-           throw new ApplicationError(ApplicationError.INVALID_SERVER_RESPONSE)
+        try
+        {
+          let token = new Token(response.json() as ApiToken);
 
-        // TODO: we only save the access_token but we have other info in the Token JSON
-        // this.localStorageService.set("accessToken", token.accessToken);
+          this.localStorageService.setItem(LocalStorageService.ACCESS_TOKEN_KEY, token.accessToken);
+        }
+        catch (error) {
+          console.error(error);
+          throw new ApplicationError(ApplicationError.PROCESSING_SERVER_RESPONSE);
+        }
       });
   }
 }

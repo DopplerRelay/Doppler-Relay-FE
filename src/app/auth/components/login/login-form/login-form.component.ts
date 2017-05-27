@@ -29,14 +29,12 @@ export class LoginFormComponent implements OnInit {
   }
 
   onLogin() {
-    if (this.loginform.valid){
+    if (this.loginform.valid) {
       this.authService.openSession(this.username.value, this.password.value)
-      .subscribe(() => {
-        alert("Login successful");
-      }, error => {
-        alert("Error attempting to login " + error.code);
+      .subscribe({
+        complete: () => alert("Login successful"),
+        error: error => alert("Error attempting to login. Error code:" + error.code)
       });
     }
   }
-
 }
