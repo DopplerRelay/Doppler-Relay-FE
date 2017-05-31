@@ -33,7 +33,7 @@ export class LoginFormComponent implements OnInit {
       this.authService.openSession(this.username.value, this.password.value)
       .subscribe({
         complete: () => alert("Login successful"),
-        error: error => alert("Error attempting to login. Error code:" + error.code)
+        error: error => alert(`Error attempting to login. Error code: ${error.code}`)
       });
     }
   }

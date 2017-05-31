@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { AuthModule } from "app/auth/auth.module";
 import { SharedModule } from "app/shared/shared.module";
+import { ReportsModule } from "app/reports/reports.module";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { SharedModule } from "app/shared/shared.module";
   imports: [
     SharedModule,
     BrowserModule,
+    ReportsModule,
     FormsModule,
     HttpModule,
     AuthModule
