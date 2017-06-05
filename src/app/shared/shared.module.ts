@@ -3,6 +3,7 @@ import { FooterComponent } from "app/shared/components/footer/footer.component";
 import { HttpProxyService } from "app/shared/services/infrastructure/http-proxy/http-proxy.service";
 import { LocalStorageService } from "app/shared/services/infrastructure/local-storage/local-storage.service";
 import { HeaderComponent } from './components/header/header.component';
+import { AuthService } from "app/shared/services/auth/auth.service";
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { HeaderComponent } from './components/header/header.component';
     ],
   providers: [
     HttpProxyService,
-    LocalStorageService
+    LocalStorageService,
+    AuthService
   ]
 })
 export class SharedModule { }

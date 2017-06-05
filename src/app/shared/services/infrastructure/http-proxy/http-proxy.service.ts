@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, XHRBackend, RequestOptions, RequestOptionsArgs, Request, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
-import { ApplicationError } from "app/shared/services/infrastructure/applicationError";
+import { ApplicationError } from "app/shared/services/infrastructure/application-error";
 import { environment } from "environments/environment";
 import { LocalStorageService } from "app/shared/services/infrastructure/local-storage/local-storage.service";
 import { ApiError } from "app/shared/models/api/api-error";

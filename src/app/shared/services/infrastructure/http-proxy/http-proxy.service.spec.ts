@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { HttpProxyService } from './http.service';
+import { HttpProxyService } from './http-proxy.service';
 
-describe('HttpService', () => {
+describe('HttpProxyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [HttpProxyService]
