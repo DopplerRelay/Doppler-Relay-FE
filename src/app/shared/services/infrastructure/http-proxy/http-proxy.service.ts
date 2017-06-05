@@ -9,6 +9,7 @@ import "rxjs/add/operator/catch"
 
 @Injectable()
 export class HttpProxyService extends Http {  
+
   private apiProxyUrl = environment.dopplerRelayApi.baseUrl;
   private authorizationHeader = '';
 
@@ -95,7 +96,6 @@ export class HttpProxyService extends Http {
         case '501.0': throw new ApplicationError(ApplicationError.NOT_IMPLEMENTED);
       }
 
-      // Review other status codes and improve the error handling based on the API documentation.
       throw new ApplicationError(ApplicationError.UNEXPECTED_ERROR);
     };
   }

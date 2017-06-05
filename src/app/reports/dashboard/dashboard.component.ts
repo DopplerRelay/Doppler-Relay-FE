@@ -3,11 +3,11 @@ import { ReportsService } from "app/shared/services/reports/reports.service";
 import { EventItem } from "app/shared/models/event-item";
 
 @Component({
-  selector: 'app-reports-summary',
-  templateUrl: './reports-summary.component.html',
-  styleUrls: ['./reports-summary.component.css']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class ReportsSummaryComponent implements OnInit {
+export class DashboardComponent implements OnInit {
 
   eventsChartData: EventItem[] = [];
 

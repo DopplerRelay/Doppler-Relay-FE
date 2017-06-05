@@ -3,9 +3,9 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from "app/shared/components/footer/footer.component";
 import { Mock } from "ts-mocks/lib";
 import { AuthService } from "app/shared/services/auth/auth.service";
-import { LoginComponent } from "app/auth/components/login/login.component";
-import { LoginHeaderComponent } from "app/auth/components/login/login-header/login-header.component";
-import { LoginFormComponent } from "app/auth/components/login/login-form/login-form.component";
+import { LoginComponent } from "app/auth/login/login.component";
+import { LoginHeaderComponent } from "app/auth/login/login-header/login-header.component";
+import { LoginFormComponent } from "app/auth/login/login-form/login-form.component";
 
 describe('AppComponent', () => {
   
