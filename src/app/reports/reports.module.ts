@@ -8,7 +8,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReportsService } from "app/shared/services/reports/reports.service";
 import { SharedModule } from "app/shared/shared.module";
 import { DownloadsComponent } from './downloads/downloads.component';
-import { AuthService } from "app/shared/services/auth/auth.service";
 
 @NgModule({
   imports: [
@@ -24,10 +23,6 @@ import { AuthService } from "app/shared/services/auth/auth.service";
   ],
   exports: [
     DashboardComponent
-  ],
-  providers: [
-    ReportsService,
-    AuthService,
   ]
 })
 export class ReportsModule { }

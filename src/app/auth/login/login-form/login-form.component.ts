@@ -8,10 +8,7 @@ import { ApplicationError } from "app/shared/services/infrastructure/application
 @Component({
   selector: 'login-form',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.css'],
-  providers: [
-    AuthService
-    ]
+  styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
   
@@ -32,11 +29,15 @@ export class LoginFormComponent implements OnInit {
 
   onLogin() {
     this.errorHandlerService.executeSafely(() => {
+
       if (this.loginform.valid) {
         this.authService.openSession(this.username.value, this.password.value)
         .subscribe({
+
           complete: () => alert("Login successful"),
+
           error: applicationError => {
+
             if (applicationError.code == ApplicationError.AUTHENTICATION_ERROR) {
               alert("invalid credentials");
             } else {

@@ -6,6 +6,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { AuthService } from "app/shared/services/auth/auth.service";
 import { ErrorHandlerService } from "app/shared/services/infrastructure/error-handler/error-handler.service";
 import { ErrorHandlerComponent } from './components/error-handler/error-handler.component';
+import { ReportsService } from "app/shared/services/reports/reports.service";
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ErrorHandlerComponent } from './components/error-handler/error-handler.
     HttpProxyService,
     LocalStorageService,
     AuthService,
-    ErrorHandlerService
+    ErrorHandlerService,
+    ReportsService
   ]
 })
 export class SharedModule { }

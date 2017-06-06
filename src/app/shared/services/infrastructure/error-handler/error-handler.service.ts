@@ -14,7 +14,7 @@ export class ErrorHandlerService {
       func();
     }
     catch (error) {
-      console.log(error);
+      console.error(error);
 
       let applicationError = error as ApplicationError;
 
