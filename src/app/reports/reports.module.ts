@@ -27,7 +27,7 @@ import { AuthService } from "app/shared/services/auth/auth.service";
   ],
   providers: [
     ReportsService,
-    AuthService
+    AuthService,
   ]
 })
 export class ReportsModule { }

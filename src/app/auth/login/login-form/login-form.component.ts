@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from "app/shared/services/auth/auth.service";
 import { Token } from "app/shared/models/token"
+import { ErrorHandlerService } from "app/shared/services/infrastructure/error-handler/error-handler.service";
+import { ApplicationError } from "app/shared/services/infrastructure/application-error";
 
 @Component({
   selector: 'login-form',
@@ -17,7 +19,7 @@ export class LoginFormComponent implements OnInit {
   username: FormControl;
   password: FormControl;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private errorHandlerService: ErrorHandlerService) { }
 
   ngOnInit() {
     this.username = new FormControl('', Validators.required);
@@ -29,12 +31,20 @@ export class LoginFormComponent implements OnInit {
   }
 
   onLogin() {
-    if (this.loginform.valid) {
-      this.authService.openSession(this.username.value, this.password.value)
-      .subscribe({
-        complete: () => alert("Login successful"),
-        error: error => alert(`Error attempting to login. Error code: ${error.code}`)
-      });
-    }
+    this.errorHandlerService.executeSafely(() => {
+      if (this.loginform.valid) {
+        this.authService.openSession(this.username.value, this.password.value)
+        .subscribe({
+          complete: () => alert("Login successful"),
+          error: applicationError => {
+            if (applicationError.code == ApplicationError.AUTHENTICATION_ERROR) {
+              alert("invalid credentials");
+            } else {
+              this.errorHandlerService.nextError.next(applicationError);
+            }
+          }
+        });
+      }
+    });
   }
 }
