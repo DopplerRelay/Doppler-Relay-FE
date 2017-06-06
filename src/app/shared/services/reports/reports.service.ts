@@ -15,33 +15,32 @@ export class ReportsService {
 
   getEventsStatistics(from: Date, to: Date): Observable<EventItem[]>{
 
-    let params = new URLSearchParams();
-      
-        // TODO: move this hardcoded value to setting
-        params.set('per_page', '200');
-        params.set('from', from.toISOString());
-        params.set('to', to.toISOString());
+      if (this.authService.currentIdentity == null)
+        return Observable.throw(new ApplicationError(ApplicationError.UNAUTHORIZED));
 
-        if (this.authService.currentIdentity == null)
-          return Observable.throw(new ApplicationError(ApplicationError.UNAUTHORIZED));
+      let params = {
+        per_page: 200, // TODO: move this hardcoded value to setting
+        from: from.toISOString(),
+        to: to.toISOString()
+      };
 
-        return this.http.get(`accounts/${this.authService.currentIdentity.relayAccounts[0]}/statistics/events/by_day`, { params: params })
-        .map(response => {
-          try {
-            var apiItems = response.json() as ApiEventItemCollection;
-            
-            var modelItems = new Array<EventItem>();
+      return this.http.get(`accounts/${this.authService.currentIdentity.relayAccounts[0]}/statistics/events/by_day`, { params: params })
+      .map(response => {
+        try {
+          var apiItems = response.json() as ApiEventItemCollection;
+          
+          var modelItems = new Array<EventItem>();
 
-            apiItems.items.forEach(element => {
-              modelItems.push(new EventItem(element));
-            });
- 
-            return modelItems;
+          apiItems.items.forEach(element => {
+            modelItems.push(new EventItem(element));
+          });
 
-            } catch (error) {
-              console.error(error);
-              return Observable.throw(new ApplicationError(ApplicationError.PROCESSING_SERVER_RESPONSE));
-            }
-        });
+          return modelItems;
+
+        } catch (error) {
+          console.error(error);
+          return Observable.throw(new ApplicationError(ApplicationError.PROCESSING_SERVER_RESPONSE));
+        }
+      });
     }
 }
