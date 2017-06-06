@@ -8,13 +8,14 @@ import { ApiToken } from "app/shared/models/api/api-token";
 import "rxjs/add/operator/map"
 import { Identity } from "app/shared/models/identity";
 import { ApiJwtBody } from "app/shared/models/api/api-jwt-body";
+import { ErrorHandlerService } from "app/shared/services/infrastructure/error-handler/error-handler.service";
 
 @Injectable()
 export class AuthService {
 
   currentIdentity: Identity = null;
 
-  constructor(private http: HttpProxyService, private localStorageService: LocalStorageService) {
+  constructor(private http: HttpProxyService, private localStorageService: LocalStorageService, private errorHandlerService: ErrorHandlerService) {
 
     let accessToken = localStorage.getItem(LocalStorageService.ACCESS_TOKEN_KEY);
 
@@ -29,17 +30,17 @@ export class AuthService {
 
     return this.http.post('tokens', credentials)
       .map(response => {
-        try
-        {
+
+        this.errorHandlerService.executeSafely(() => {
+          
           let token = new Token(response.json() as ApiToken);
 
           this.localStorageService.setItem(LocalStorageService.ACCESS_TOKEN_KEY, token.accessToken);
 
           this.CreateCurrentIdentity(token.accessToken);
-        } catch (error) {
-          console.error(error);
-          throw new ApplicationError(ApplicationError.PROCESSING_SERVER_RESPONSE);
-        }
+        }, error => { 
+          throw error; 
+        });
       });
   }
 
