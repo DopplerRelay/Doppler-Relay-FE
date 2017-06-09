@@ -4,6 +4,8 @@ import { AuthService } from "app/shared/services/auth/auth.service";
 import { Token } from "app/shared/models/token"
 import { ErrorHandlerService } from "app/shared/services/infrastructure/error-handler/error-handler.service";
 import { ApplicationError } from "app/shared/services/infrastructure/application-error";
+import { AuthGuard } from "app/shared/services/auth/auth-guard.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'login-form',
@@ -11,12 +13,13 @@ import { ApplicationError } from "app/shared/services/infrastructure/application
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
-  
+  returnUrl: any;
+
   loginform: FormGroup;
   username: FormControl;
   password: FormControl;
 
-  constructor(private authService: AuthService, private errorHandlerService: ErrorHandlerService) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService, private errorHandlerService: ErrorHandlerService, private authGuard: AuthGuard, private router: Router) { }
 
   ngOnInit() {
     this.username = new FormControl('', Validators.required);
@@ -25,6 +28,8 @@ export class LoginFormComponent implements OnInit {
       username: this.username,
       password: this.password
     });
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onLogin() {
@@ -34,7 +39,9 @@ export class LoginFormComponent implements OnInit {
         this.authService.openSession(this.username.value, this.password.value)
         .subscribe({
 
-          complete: () => alert("Login successful"),
+          complete: () => {
+            this.router.navigateByUrl(this.returnUrl);
+          },
 
           error: applicationError => {
 

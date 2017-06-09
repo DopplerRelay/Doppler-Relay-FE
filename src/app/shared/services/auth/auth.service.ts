@@ -50,6 +50,16 @@ export class AuthService {
       
       this.currentIdentity = new Identity(tokenBody);
   }
+
+  userIsLogged() : boolean {
+
+    return !!this.localStorageService.getItem(LocalStorageService.ACCESS_TOKEN_KEY);
+  }
+
+  closeSession() : void {
+
+    this.localStorageService.removeItem(LocalStorageService.ACCESS_TOKEN_KEY);
+  }
 }
 
 
