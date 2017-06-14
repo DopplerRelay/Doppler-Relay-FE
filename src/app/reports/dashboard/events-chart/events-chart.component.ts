@@ -5,7 +5,7 @@ import { EventItem } from "app/shared/models/event-item";
 @Component({
   selector: 'app-events-chart',
   templateUrl: './events-chart.component.html',
-  styleUrls: ['./events-chart.component.css']
+  styleUrls: ['./events-chart.component.scss']
 })
 export class EventsChartComponent implements OnInit, OnChanges {
 
