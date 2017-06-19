@@ -8,10 +8,14 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { AuthModule } from "app/auth/auth.module";
 import { SharedModule } from "app/shared/shared.module";
 import { ReportsModule } from "app/reports/reports.module";
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
+import { AuthGuard } from './shared/services/auth/auth-guard.service';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     SharedModule,
@@ -19,7 +23,11 @@ import { ReportsModule } from "app/reports/reports.module";
     ReportsModule,
     FormsModule,
     HttpModule,
-    AuthModule
+    AuthModule,
+    AppRoutingModule
+  ],
+  providers: [
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })
