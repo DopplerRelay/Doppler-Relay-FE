@@ -15,7 +15,7 @@ export class AuthService {
 
   currentIdentity: Identity = null;
 
-  constructor(private http: HttpProxyService, private localStorageService: LocalStorageService, private errorHandlerService: ErrorHandlerService) {
+  constructor(private http: HttpProxyService, private localStorageService: LocalStorageService) {
 
     let accessToken = localStorage.getItem(LocalStorageService.ACCESS_TOKEN_KEY);
 
@@ -31,16 +31,11 @@ export class AuthService {
     return this.http.post('tokens', credentials)
       .map(response => {
 
-        this.errorHandlerService.executeSafely(() => {
-          
           let token = new Token(response.json() as ApiToken);
 
           this.localStorageService.setItem(LocalStorageService.ACCESS_TOKEN_KEY, token.accessToken);
 
           this.CreateCurrentIdentity(token.accessToken);
-        }, error => { 
-          throw error; 
-        });
       });
   }
 

@@ -5,28 +5,47 @@ import { ApplicationError } from "app/shared/services/infrastructure/application
 @Injectable()
 export class ErrorHandlerService {
 
-  nextError: Subject<ApplicationError> = new Subject<ApplicationError>();
+  static nextError: Subject<ApplicationError> = new Subject<ApplicationError>();
 
   constructor() { }
-
-  executeSafely(func: () => void, handleError?: (param: ApplicationError) => void): void {
-    try {
-      func();
-    }
-    catch (error) {
-      console.error(error);
-
-      let applicationError = error as ApplicationError;
-
-      if (!applicationError) {
-        applicationError = new ApplicationError(ApplicationError.UNEXPECTED_ERROR);
-      }
-
-      if (handleError != null) {
-        handleError(applicationError)
-      } else {
-        this.nextError.next(applicationError);
-      }
-    }
-  }
 }
+
+export function HandleError(nextError?: Subject<ApplicationError>) {
+    
+    return function HandleError(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+
+      // save a reference to the original method this way we keep the values currently in the
+      // descriptor and don't overwrite what another decorator might have done to the descriptor.
+      if(descriptor === undefined) {
+        descriptor = Object.getOwnPropertyDescriptor(target, propertyKey);
+      }
+      
+      let originalMethod = descriptor.value;
+  
+      descriptor.value = function () {
+
+          try {
+            // note usage of originalMethod here
+            let result = originalMethod.apply(this, arguments);
+            return result;
+          }
+          catch (error) {
+            console.error(error);
+            
+            let applicationError = error as ApplicationError;
+            if (!applicationError) {
+              applicationError = new ApplicationError(ApplicationError.UNEXPECTED_ERROR);
+            }
+
+            if (nextError) {
+              nextError.next(applicationError);
+            } else {
+              ErrorHandlerService.nextError.next(applicationError);
+            }
+          }
+      };
+  
+      // return edited descriptor as opposed to overwriting the descriptor
+      return descriptor;
+    };
+};

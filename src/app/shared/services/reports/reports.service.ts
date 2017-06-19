@@ -15,9 +15,6 @@ export class ReportsService {
 
   getEventsStatistics(from: Date, to: Date): Observable<EventItem[]>{
 
-      if (this.authService.currentIdentity == null)
-        return Observable.throw(new ApplicationError(ApplicationError.UNAUTHORIZED));
-
       let params = {
         per_page: 200, // TODO: move this hardcoded value to setting
         from: from.toISOString(),
@@ -25,8 +22,9 @@ export class ReportsService {
       };
 
       return this.http.get(`accounts/${this.authService.currentIdentity.relayAccounts[0]}/statistics/events/by_day`, { params: params })
-      .map(response => {
-        try {
+      .map(
+        response => 
+        {
           var apiItems = response.json() as ApiEventItemCollection;
           
           var modelItems = new Array<EventItem>();
@@ -36,11 +34,6 @@ export class ReportsService {
           });
 
           return modelItems;
-
-        } catch (error) {
-          console.error(error);
-          return Observable.throw(new ApplicationError(ApplicationError.PROCESSING_SERVER_RESPONSE));
-        }
       });
     }
 }

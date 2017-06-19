@@ -11,10 +11,10 @@ export class ErrorHandlerComponent implements OnInit {
 
   currentError = "";
 
-  constructor(private errorHandlerService: ErrorHandlerService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.errorHandlerService.nextError.subscribe(error => {
+    ErrorHandlerService.nextError.subscribe(error => {
       switch (error.code)
       {
         case ApplicationError.UNAUTHORIZED: this.currentError = "You need to login to perform this action"; break;

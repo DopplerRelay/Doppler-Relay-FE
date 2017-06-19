@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from "app/shared/services/auth/auth.service";
 import { Token } from "app/shared/models/token"
-import { ErrorHandlerService } from "app/shared/services/infrastructure/error-handler/error-handler.service";
+import { ErrorHandlerService, HandleError } from "app/shared/services/infrastructure/error-handler/error-handler.service";
 import { ApplicationError } from "app/shared/services/infrastructure/application-error";
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -18,8 +18,7 @@ export class LoginFormComponent implements OnInit {
   username: FormControl;
   password: FormControl;
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private errorHandlerService: ErrorHandlerService, private router: Router) { }
-
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
   ngOnInit() {
     this.username = new FormControl('', Validators.required);
     this.password = new FormControl('', Validators.required);
@@ -31,27 +30,22 @@ export class LoginFormComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
+  @HandleError()
   onLogin() {
-    this.errorHandlerService.executeSafely(() => {
-
-      if (this.loginform.valid) {
-        this.authService.openSession(this.username.value, this.password.value)
-        .subscribe({
-
+    if (this.loginform.valid) {
+      this.authService.openSession(this.username.value, this.password.value)
+      .subscribe({
           complete: () => {
             this.router.navigateByUrl(this.returnUrl);
           },
-
-          error: applicationError => {
-
-            if (applicationError.code == ApplicationError.AUTHENTICATION_ERROR) {
-              alert("invalid credentials");
-            } else {
-              this.errorHandlerService.nextError.next(applicationError);
-            }
+        error: applicationError => {
+          if (applicationError.code == ApplicationError.AUTHENTICATION_ERROR) {
+            alert("invalid credentials");
+          } else {
+            ErrorHandlerService.nextError.next(applicationError);
           }
-        });
-      }
-    });
+        }
+      });
+    }
   }
 }
