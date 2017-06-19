@@ -4,7 +4,6 @@ import { AuthService } from "app/shared/services/auth/auth.service";
 import { Token } from "app/shared/models/token"
 import { ErrorHandlerService } from "app/shared/services/infrastructure/error-handler/error-handler.service";
 import { ApplicationError } from "app/shared/services/infrastructure/application-error";
-import { AuthGuard } from "app/shared/services/auth/auth-guard.service";
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -19,7 +18,7 @@ export class LoginFormComponent implements OnInit {
   username: FormControl;
   password: FormControl;
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private errorHandlerService: ErrorHandlerService, private authGuard: AuthGuard, private router: Router) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService, private errorHandlerService: ErrorHandlerService, private router: Router) { }
 
   ngOnInit() {
     this.username = new FormControl('', Validators.required);
