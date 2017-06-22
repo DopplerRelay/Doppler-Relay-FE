@@ -5,7 +5,7 @@ import { ApplicationError } from "app/shared/services/infrastructure/application
 @Component({
   selector: 'app-error-handler',
   templateUrl: './error-handler.component.html',
-  styleUrls: ['./error-handler.component.css']
+  styleUrls: ['./error-handler.component.scss']
 })
 export class ErrorHandlerComponent implements OnInit {
 
