@@ -4,7 +4,7 @@ import { ReportsService } from "app/shared/services/reports/reports.service";
 @Component({
   selector: 'app-date-range',
   templateUrl: './date-range.component.html',
-  styleUrls: ['./date-range.component.css']
+  styleUrls: ['./date-range.component.scss']
 })
 export class DateRangeComponent implements OnInit {
   
